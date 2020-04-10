@@ -23,12 +23,12 @@ const server = http.createServer((req, res) => {
            const parseBody = Buffer.concat(body).toString();
           console.log(parseBody);
            const message = parseBody.split('=')[1];
-           fs.writeFileSync('message.txt',message);
-
+           fs.writeFile('message.txt',message,(err)=>{
+            res.statusCode= 302;
+            res.setHeader('Location','/')
+            return res.end();
+           });
         });
-        res.statusCode= 302;
-        res.setHeader('Location','/')
-        return res.end();
     }
 
     res.setHeader('Content-Type', 'text/html');
