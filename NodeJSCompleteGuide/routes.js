@@ -41,7 +41,8 @@ const requestHandler = (req, res) => {
 }
 // module.exports = requestHandler;
 
-module.exports={
-    handler: requestHandler,
-    sometext: 'somehard coded thing'
-}
+// module.exports={
+//     handler: requestHandler,
+//     sometext: 'somehard coded thing'
+// }
+exports.handler = requestHandler
