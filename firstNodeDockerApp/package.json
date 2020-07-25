@@ -1,0 +1,14 @@
+{
+  "name": "firstnodedockerapp",
+  "version": "1.0.0",
+  "description": "First undestanding of node and docker",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "German",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
