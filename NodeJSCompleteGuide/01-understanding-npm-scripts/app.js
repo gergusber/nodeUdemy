@@ -10,6 +10,7 @@ app.use(adminRoutes);
 app.use(shopRoutes);
 
 app.use('/', (req, res, next) => {
-    console.log('another middelware ');
+    console.log('Catch any request that isnt defined in the routes ');
+    res.send('<h1>Route not Defined</h1>');
 });
 app.listen(3000);
