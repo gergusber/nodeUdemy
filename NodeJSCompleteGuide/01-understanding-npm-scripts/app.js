@@ -1,31 +1,15 @@
 const http = require('http');
 const express = require('express');
 const parser = require('body-parser');
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const app = express();
 
-const app=express();
+app.use(parser.urlencoded({ extended: false }));
+app.use(adminRoutes);
+app.use(shopRoutes);
 
-app.use(parser.urlencoded({extended:false}));
-
-app.use('/',(req,res,next)=>{
-    console.log('This always runs');
-    next();
+app.use('/', (req, res, next) => {
+    console.log('another middelware ');
 });
-
-app.use('/add-Product', (req,res, next)=>{
-    console.log('another middelware');
-    res.send('<form action="/product" method="POST"><input type="text" name="title"> <button type="submit">Add Product</button></form>');
-});
-
-app.post('/product',(req,res,next)=>{
-    console.log('This always runs',req.body);    
-    res.redirect('/');
- 
-})
-
-app.use('/', (req,res, next)=>{
-    console.log('another middelware');
-    res.send('<h1>Hello from express</h1>');
-});
-
-
 app.listen(3000);
