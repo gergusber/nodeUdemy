@@ -29,4 +29,4 @@ EXPOSE 80
 CMD [ "npm", "start" ]
 
 
-# docker run -d -p 3001:80 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "C:/Cursos/nodeUdemy/NodeJSCompleteGuide/01-understanding-npm-scripts:/app" -v /app/node_modules node:udemy
+# docker run -d -p 3001:80 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "<MyPATH>:/app" -v /app/node_modules node:udemy
