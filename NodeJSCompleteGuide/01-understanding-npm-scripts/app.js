@@ -15,4 +15,4 @@ app.use((req, res, next) => {
     console.log('Catch any request that isnt defined in the routes ');
     res.status(404).sendFile(path.join(__dirname,'views','not-found.html')); 
 });
-app.listen(3000);
+app.listen(80);
