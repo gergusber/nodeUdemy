@@ -16,7 +16,10 @@ router.get("/add-product", (req, res, next) => {
 // /admin/add-product => POST
 router.post("/add-product", (req, res, next) => {
   products.push({ title: req.body.title });
-  res.render('add-product',{pageTitle:"Add Product"})
+  res.render("add-product", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+  });
 });
 
 exports.routes = router;
