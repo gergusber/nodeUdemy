@@ -2,21 +2,25 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const expressHbs = require("express-handlebars");
+// const expressHbs = require("express-handlebars");
 
 const app = express();
 
 //Add handlebars engine
-app.engine('hbs',expressHbs(
-  {
-    extname: "hbs",
-    defaultLayout: "main-layout",
-    layoutsDir: "views/layouts/"}
-));
-app.set("view engine", "hbs");
+// app.engine('hbs',expressHbs(
+//   {
+//     extname: "hbs",
+//     defaultLayout: "main-layout",
+//     layoutsDir: "views/layouts/"}
+// ));
+// app.set("view engine", "hbs");
 
 //ADD ENGINE FOR PUG
 // app.set("view engine", "pug");
+
+//ADD ENGINE AS EJS
+app.set("view engine", "ejs");
+
 app.set("views", "views");
 
 const adminData = require("./routes/admin");
