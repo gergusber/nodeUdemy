@@ -32,4 +32,6 @@ EXPOSE $PORT
 # el cmd Siempre es el ultimo comando 
 CMD [ "npm", "start" ]
 
-# docker run -d -p 3001:8000 --env PORT=8000 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "C:\Cursos\nodeUdemy\Seccion6\00-starting-setup:/app:ro" -v /app/node_modules node:udemy
+
+# Primero docker build -t node:udemy .
+# SEGUNDO docker run -d -p 3001:8000 --env PORT=8000 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "C:\Cursos\nodeUdemy\Seccion6\00-starting-setup:/app:ro" -v /app/node_modules node:udemy
