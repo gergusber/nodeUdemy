@@ -10,6 +10,23 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+exports.getProductsById = (req, res, next) => {
+  const prodId= req.params.productId;
+   console.log(prodId);
+
+  Product.findById(prodId,product => {
+    console.log(product);
+   
+    res.render('shop/product-detail', {
+      prods: product,
+      pageTitle: 'The Product',
+      path: '/products-detail'
+    });
+  });
+};
+
+
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
     res.render('shop/index', {
@@ -40,3 +57,4 @@ exports.getCheckout = (req, res, next) => {
     pageTitle: 'Checkout'
   });
 };
+
