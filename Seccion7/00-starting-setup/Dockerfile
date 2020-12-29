@@ -34,4 +34,4 @@ CMD [ "npm", "start" ]
 
 
 # Primero docker build -t node:udemy .
-# SEGUNDO docker run -d -p 3001:8000 --env PORT=8000 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "C:\Cursos\nodeUdemy\Seccion7\00-starting-setup:/app:ro" -v /app/node_modules node:udemy
+# SEGUNDO docker run -d -p 3001:8000 --env PORT=8000 --rm --name node-udemy-app -v nodeUdemy:/app/nodeUdemy -v "C:\Cursos\nodeUdemy\Seccion7\00-starting-setup:/app:ro" -v /app/node_modules -v data:/app/data node:udemy
