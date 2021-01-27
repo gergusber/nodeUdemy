@@ -217,3 +217,11 @@ form {
     display: none;
   }
 }
+
+.image{
+  height: 20rem;
+
+}
+.img image{
+  height: 100%;
+}
