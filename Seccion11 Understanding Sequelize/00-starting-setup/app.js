@@ -7,6 +7,10 @@ const bodyParser = require("body-parser");
 
 const errorController = require("./controllers/error");
 
+const Product = require("./models/product");
+const User = require("./models/user");
+// const Cart = require('./models/cart');
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -14,15 +18,6 @@ app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
-
-// TestDb
-// db.execute('Select * from products')
-//     .then(result => {
-//         console.log(result[0]);
-//     })
-//     .catch(err =>{
-//         console.log(err);
-//     });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -32,13 +27,16 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+//Relationships
+Product.belongsTo(User, { constraints: true, onDelete: "CASCADE" });
+User.hasMany(Product);
+
 sequalize
-  .sync()
+  .sync({ force: true })
   .then((result) => {
     // console.log(result);
+    app.listen(3002);
   })
   .catch((err) => {
     console.log(err);
   });
-
-app.listen(3002);
