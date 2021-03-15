@@ -1,5 +1,4 @@
 const { Sequelize } = require("sequelize");
-const Sequalisze = require("sequelize");
 const sequalize = require("../util/database");
 
 const Product = sequalize.define("product", {
