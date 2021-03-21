@@ -21,11 +21,10 @@ app.use((req, res, next) => {
   User.findById("60579df424123c58a3bad616")
     .then((user) => {
       req.user = user;
-      console.log(req.user);
+      // console.log(req.user);
       next();
     })
     .catch((err) => console.log(err));
-  next();
 });
 
 app.use("/admin", adminRoutes);
