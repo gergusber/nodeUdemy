@@ -9,6 +9,7 @@ class Product {
     this.imageUrl = imageUrl;
     this._id = id ? new mongodb.ObjectId(id) : null;
   }
+
   save() {
     const db = getdb();
     let dbOp;
@@ -42,6 +43,7 @@ class Product {
         console.log(err);
       });
   }
+
   static findById(prodId) {
     const db = getdb();
     return db
