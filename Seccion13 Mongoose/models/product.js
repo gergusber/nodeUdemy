@@ -1,5 +1,5 @@
-const { ObjectId } = require("bson");
 const mongoose = require("mongoose");
+const { schema } = require("./user");
 
 const Schema = mongoose.Schema;
 
@@ -18,6 +18,11 @@ const productSchema = new Schema({
   },
   imageUrl: {
     type: String,
+    required: true,
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
 });
