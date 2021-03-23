@@ -1,3 +1,4 @@
+const product = require("../models/product");
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
@@ -74,7 +75,11 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
+    // .select("title price -_id") // se popula title y price pero no _id porque se le especifico ocn el -
+    // .populate("userId", "name")// se popula el id y el name explicito
+    // .populate("userId") //popula todo el objeto User que se levanta desde el usrId
     .then((products) => {
+      console.log("Get Products", products);
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin Products",
