@@ -23,6 +23,7 @@ app.use((req, res, next) => {
   User.findById("605a3b3b28d44d3c3c473f6a")
     .then((user) => {
       req.user = user;
+      console.log("user", user);
       next();
     })
     .catch((err) => console.log(err));
@@ -35,10 +36,12 @@ app.use(errorController.get404);
 
 mongoose
   .connect(
-    "mongodb+srv://gerbertea:2cGqcNg6aLYUBaNG@cluster0.yiltf.mongodb.net/shop?retryWrites=true&w=majority"
+    "mongodb://127.0.0.1:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false"
   )
   .then((result) => {
     User.findOne().then((usr) => {
+      console.log("Hay un usr?", usr);
+
       if (!usr) {
         const user = new User({
           name: "German",
@@ -47,11 +50,12 @@ mongoose
             items: [],
           },
         });
+
         user.save();
       }
     });
 
-    app.listen(3000);
+    app.listen(3002);
   })
   .catch((err) => {
     console.log(err);
