@@ -17,7 +17,8 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions",
 });
-
+// gerbertea2@gmail.com
+// 123123
 app.set("view engine", "ejs");
 app.set("views", "views");
 
