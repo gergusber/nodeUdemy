@@ -51,12 +51,7 @@
       <% } else { %>
       <li class="main-header__item">
         <form action="/logout" method="post">
-          <input
-            type="text"
-            name="_csrf"
-            class="hidden"
-            value="<%= csrfToken %>"
-          />
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <button type="submit">Logout</button>
         </form>
       </li>
@@ -112,12 +107,7 @@
     <% } else { %>
     <li class="mobile-nav__item">
       <form action="/logout" method="post">
-        <input
-          type="text"
-          name="_csrf"
-          class="hidden"
-          value="<%= csrfToken %>"
-        />
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
         <button type="submit">Logout</button>
       </form>
     </li>
