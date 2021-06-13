@@ -120,3 +120,19 @@ exports.postLogout = (req, res, next) => {
     res.redirect("/");
   });
 };
+
+exports.getReset = (req, res, next) => {
+  let mesage = req.flash("error");
+  if (mesage.lenth > 0) {
+    mesage = mesage[0];
+  } else {
+    mesage = null;
+  }
+  //Crear token
+
+  res.render("auth/reset", {
+    path: "/reset",
+    pageTitle: "Reset Pasword",
+    errorMessage: mesage,
+  });
+};
