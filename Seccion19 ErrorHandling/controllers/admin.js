@@ -68,7 +68,9 @@ exports.postAddProduct = (req, res, next) => {
       //   validationErrors: [],
       // });
       // throw new Error(err);
-      return res.redirect("/500");
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(500);
     });
 };
 
