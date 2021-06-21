@@ -26,6 +26,13 @@ const csrfProtection = csrf();
 
 app.set("view engine", "ejs");
 app.set("views", "views");
+
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//Configs for file
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -34,14 +41,24 @@ const fileStorage = multer.diskStorage({
     cb(null, new Date().toISOString() + "-" + file.originalname);
   },
 });
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-const authRoutes = require("./routes/auth");
-app.use(bodyParser.urlencoded({ extended: false }));
+
+const filterFile = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+//Multer
 app.use(
   multer({
     dest: "images",
     storage: fileStorage,
+    fileFilter: filterFile,
   }).single("image")
 );
 
