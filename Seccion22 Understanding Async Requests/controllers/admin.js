@@ -212,7 +212,7 @@ exports.deleteProduct = (req, res, next) => {
     .catch((err) => {
       // const error = new Error(err);
       // error.httpStatusCode = 500;
-      res.status(500).json({ message: "Deleting Product Failed" });
-      // return next();
+
+      return next(res.status(500).json({ message: "Deleting Product Failed" }));
     });
 };
