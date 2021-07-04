@@ -2,9 +2,13 @@ const express = require("express");
 const feedRoutes = require("./routes/feed");
 const app = express();
 const mongoose = require("mongoose");
-
+const path = require("path");
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(express.json());
+
+//Static image
+app.use("/images", express.static(path.join(__dirname, "images")));
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -17,6 +21,15 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/feed", feedRoutes);
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  const status = err.statusCode || 500;
+  const message = err.message;
+  res.status(status).json({
+    message: message,
+  });
+});
 
 mongoose
   .connect(
