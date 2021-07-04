@@ -3,8 +3,34 @@ const feedRoutes = require("./routes/feed");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuidv4());
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(multer({ storage: storage, fileFilter: fileFilter }).single("image"));
 
 //Static image
 app.use("/images", express.static(path.join(__dirname, "images")));
