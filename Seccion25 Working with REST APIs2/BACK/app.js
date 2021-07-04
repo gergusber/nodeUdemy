@@ -1,6 +1,7 @@
 const express = require("express");
 const feedRoutes = require("./routes/feed");
 const app = express();
+const mongoose = require("mongoose");
 
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(express.json());
@@ -17,4 +18,13 @@ app.use((req, res, next) => {
 });
 app.use("/feed", feedRoutes);
 
-app.listen(8080);
+mongoose
+  .connect(
+    "mongodb+srv://Gergusber:ez72PUQOHTqgeBip@cluster0.qob6r.mongodb.net/messages?retryWrites=true&w=majority"
+  )
+  .then((res) => {
+    app.listen(8080);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
