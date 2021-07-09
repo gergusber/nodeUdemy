@@ -47,14 +47,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
 app.use("/feed", feedRoutes);
 
 app.use((err, req, res, next) => {
@@ -68,8 +60,8 @@ app.use((err, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://gerbertea:dc7XmyotG9NErgef@cluster0.xm92h.mongodb.net/FeedDB?retryWrites=true&w=majority"
-    // { useNewUrlParser: true }
+    "mongodb+srv://gerbertea:dc7XmyotG9NErgef@cluster0.xm92h.mongodb.net/FeedDB?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
   )
   .then((res) => {
     app.listen(8080);

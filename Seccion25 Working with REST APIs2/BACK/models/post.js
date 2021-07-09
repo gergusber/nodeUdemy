@@ -5,11 +5,11 @@ const postSchema = new Schema(
   {
     title: {
       type: String,
-      require: true,
+      required: true,
     },
     imageUrl: {
       type: String,
-      require: true,
+      required: true,
     },
     content: {
       type: String,
@@ -17,12 +17,10 @@ const postSchema = new Schema(
     },
     creator: {
       type: Object,
-      required: true,
+      required: String,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Post", postSchema);

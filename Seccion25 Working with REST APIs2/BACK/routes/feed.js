@@ -1,3 +1,4 @@
+const { query } = require("express");
 const express = require("express");
 const { body } = require("express-validator");
 const feedController = require("../controllers/feed");
@@ -29,5 +30,7 @@ router.put(
   ],
   feedController.getPut
 );
+
+router.delete("/post/:postId", feedController.deletePost);
 
 module.exports = router;
