@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
-
+const socket = require("socket.io");
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(express.json());
 
@@ -68,7 +68,21 @@ mongoose
     { useNewUrlParser: true }
   )
   .then((res) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+
+    //Add cors for the localhost 3000
+    let options = {
+      cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+      },
+    };
+    const io = require("socket.io")(server, options);
+
+    console.log("client!!!!!!!!");
+    io.on("connection", (socket) => {
+      console.log("client connected!!!!!!!!");
+    });
   })
   .catch((err) => {
     console.log(err);

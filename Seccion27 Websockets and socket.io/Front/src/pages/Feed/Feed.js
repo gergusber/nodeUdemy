@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import openSocket from "socket.io-client";
 
 import Post from "../../components/Feed/Post/Post";
 import Button from "../../components/Button/Button";
@@ -8,7 +9,6 @@ import Paginator from "../../components/Paginator/Paginator";
 import Loader from "../../components/Loader/Loader";
 import ErrorHandler from "../../components/ErrorHandler/ErrorHandler";
 import "./Feed.css";
-
 class Feed extends Component {
   state = {
     isEditing: false,
@@ -35,6 +35,7 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
+    openSocket("http://localhost:8080");
   }
 
   loadPosts = (direction) => {
