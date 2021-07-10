@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const Post = require("../models/post");
+const User = require("../models/user");
 const fs = require("fs");
 const path = require("path");
 exports.getPosts = (req, res, next) => {
@@ -47,21 +48,30 @@ exports.createPost = (req, res, next) => {
 
   const title = req.body.title;
   const content = req.body.content;
+  const userId = req.userId;
+  let creator;
   const post = new Post({
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: {
-      name: "German",
-    },
+    creator: userId,
   });
 
   post
     .save()
     .then((result) => {
+      return User.findById(userId);
+    })
+    .then((user) => {
+      user.posts.push(post);
+      creator = user;
+      return user.save();
+    })
+    .then((result) => {
       res.status(201).json({
         message: "Post created successfully!",
-        post: result,
+        post: post,
+        creator: { _id: creator._id, name: creator.name },
       });
     })
     .catch((err) => {
@@ -123,7 +133,11 @@ exports.getPut = (req, res, next) => {
         err.statusCode = 404;
         throw err;
       }
-
+      if (post.creator.toString() !== req.userId) {
+        const err = new Error("Not authorized");
+        err.statusCode = 403;
+        throw err;
+      }
       if (imageUrl !== post.imageUrl) {
         clearImage(post.imageUrl);
       }
@@ -143,6 +157,7 @@ exports.getPut = (req, res, next) => {
       next(err);
     });
 };
+
 exports.deletePost = (req, res, next) => {
   const postId = req.params.postId;
 
@@ -154,6 +169,12 @@ exports.deletePost = (req, res, next) => {
         err.statusCode = 404;
         throw err;
       }
+      if (post.creator.toString() !== req.userId) {
+        const err = new Error("Not authorized");
+        err.statusCode = 403;
+        throw err;
+      }
+
       clearImage(post.imageUrl);
       return Post.findByIdAndRemove(postId);
     })
