@@ -79,7 +79,7 @@ mongoose
         methods: ["GET", "POST"],
       },
     };
-    const io = require("./socket").init(server, options);
+    const io = require("./socket").init(server);
 
     console.log("client!!!!!!!!");
     io.on("connection", (socket) => {
