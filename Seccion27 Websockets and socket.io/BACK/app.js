@@ -7,7 +7,9 @@ const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const socket = require("socket.io");
+
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
+
 app.use(express.json());
 
 const storage = multer.diskStorage({
@@ -77,7 +79,7 @@ mongoose
         methods: ["GET", "POST"],
       },
     };
-    const io = require("socket.io")(server, options);
+    const io = require("./socket").init(server, options);
 
     console.log("client!!!!!!!!");
     io.on("connection", (socket) => {
