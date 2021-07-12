@@ -7,7 +7,8 @@ const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const { graphqlHTTP } = require("express-graphql");
 const graphqlSchema = require("./graphql/schema");
-const graphqlResolvers = require("./graphql/resolvers");
+const graphqlResolver = require("./graphql/resolvers");
+const auth = require("./middleware/auth");
 
 app.use(express.json());
 
@@ -43,18 +44,35 @@ app.use(
   })
 ); // application/json
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // ADD ALL OR WILDCARD "*" ALLOW ALL
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
   next();
 });
+
+app.use(auth); //Middleware to get user
 
 app.use(
   "/graphql",
   graphqlHTTP({
     schema: graphqlSchema,
-    rootValue: graphqlResolvers,
+    rootValue: graphqlResolver,
     graphiql: true,
+    customFormatErrorFn(err) {
+      if (!err.originalError) {
+        return err;
+      }
+      const data = err.originalError.data;
+      const message = err.message || "An error occurred.";
+      const code = err.originalError.code || 500;
+      return { message: message, status: code, data: data };
+    },
   })
 );
 
