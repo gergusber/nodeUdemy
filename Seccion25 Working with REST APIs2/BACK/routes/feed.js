@@ -19,7 +19,7 @@ router.post(
   feedController.createPost
 );
 
-//GET
+//GET/feed/post
 
 router.get("/post/:postId", isAuth, feedController.getPost);
 

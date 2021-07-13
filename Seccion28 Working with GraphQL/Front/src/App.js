@@ -65,7 +65,7 @@ class App extends Component {
           }`,
     };
     this.setState({ authLoading: true });
-    fetch("http://localhost:8080/graphql", {
+    fetch("http://localhost:8080/graphql?parametro=2", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

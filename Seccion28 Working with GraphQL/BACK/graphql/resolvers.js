@@ -111,4 +111,5 @@ module.exports = {
       updatedAt: createdPost.updatedAt.toISOString(),
     };
   },
+  posts: async function (args, req) {},
 };
