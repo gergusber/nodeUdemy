@@ -1,5 +1,4 @@
 const path = require("path");
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -11,6 +10,9 @@ const multer = require("multer");
 const helmet = require("helmet");
 const errorController = require("./controllers/error");
 const User = require("./models/user");
+const compression = require("compression");
+const morgan = require("morgan");
+const fs = require("fs");
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.x3o3q.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 // VAR USER_NAME = gerbertea
@@ -51,8 +53,16 @@ app.set("views", "views");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
-app.use(helmet());
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "acces.log"),
+  {
+    flags: "a",
+  }
+);
+app.use(helmet()); // SE USA PARA PARSEAR LAS REQUEST A HTTPS
+app.use(compression()); // Se usa para hacer compress de los files para que sean mas livianos al momento de cargar
+app.use(morgan("combined", { stream: accessLogStream })); // Se usa para loguear
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
