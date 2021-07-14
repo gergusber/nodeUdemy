@@ -67,7 +67,6 @@ module.exports = {
       error.code = 401;
       throw error;
     }
-
     const errors = [];
     if (
       validator.isEmpty(postInput.title) ||
@@ -87,10 +86,9 @@ module.exports = {
       error.code = 422;
       throw error;
     }
-
-    const user = await User.findById(req.usreId);
+    const user = await User.findById(req.userId);
     if (!user) {
-      const error = new Error("User not found .");
+      const error = new Error("Invalid user.");
       error.code = 401;
       throw error;
     }
@@ -101,9 +99,8 @@ module.exports = {
       creator: user,
     });
     const createdPost = await post.save();
-
     user.posts.push(createdPost);
-    user.save();
+    await user.save();
     return {
       ...createdPost._doc,
       _id: createdPost._id.toString(),
@@ -111,5 +108,32 @@ module.exports = {
       updatedAt: createdPost.updatedAt.toISOString(),
     };
   },
-  posts: async function (args, req) {},
+  posts: async function ({ page }, req) {
+    if (!req.isAuth) {
+      const error = new Error("Not authenticated!");
+      error.code = 401;
+      throw error;
+    }
+    if (!page) {
+      page = 1;
+    }
+    const perPage = 2;
+    const totalPosts = await Post.find().countDocuments();
+    const posts = await Post.find()
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .populate("creator");
+    return {
+      posts: posts.map((p) => {
+        return {
+          ...p._doc,
+          _id: p._id.toString(),
+          createdAt: p.createdAt.toISOString(),
+          updatedAt: p.updatedAt.toISOString(),
+        };
+      }),
+      totalPosts: totalPosts,
+    };
+  },
 };

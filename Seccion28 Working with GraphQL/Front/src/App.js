@@ -59,13 +59,17 @@ class App extends Component {
   loginHandler = (event, authData) => {
     event.preventDefault();
     const graphqlQuery = {
-      query: `login(email:${authData.email}, password:${authData.password}) {
-            token 
+      query: `
+        {
+          login(email: "${authData.email}", password: "${authData.password}") {
+            token
             userId
-          }`,
+          }
+        }
+      `,
     };
     this.setState({ authLoading: true });
-    fetch("http://localhost:8080/graphql?parametro=2", {
+    fetch("http://localhost:8080/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +86,7 @@ class App extends Component {
           );
         }
         if (resData.errors) {
-          throw new Error("User Login Faileed");
+          throw new Error("User login failed!");
         }
         console.log(resData);
         this.setState({
@@ -116,11 +120,7 @@ class App extends Component {
     const graphqlQuery = {
       query: `
         mutation {
-          createUser(userInput:{
-            email:"${authData.signupForm.email.value}",
-            name:"${authData.signupForm.name.value}",
-            password:"${authData.signupForm.password.value}"
-          }){
+          createUser(userInput: {email: "${authData.signupForm.email.value}", name:"${authData.signupForm.name.value}", password:"${authData.signupForm.password.value}"}) {
             _id
             email
           }
@@ -132,7 +132,7 @@ class App extends Component {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ graphqlQuery }),
+      body: JSON.stringify(graphqlQuery),
     })
       .then((res) => {
         return res.json();
@@ -144,7 +144,7 @@ class App extends Component {
           );
         }
         if (resData.errors) {
-          throw new Error("User creation Faileed");
+          throw new Error("User creation failed!");
         }
         console.log(resData);
         this.setState({ isAuth: false, authLoading: false });

@@ -8,7 +8,6 @@ const io = require("../socket");
 exports.getPosts = async (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 2;
-
   try {
     const totalItems = await Post.find().countDocuments();
     const posts = await Post.find()
@@ -16,8 +15,9 @@ exports.getPosts = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .skip((currentPage - 1) * perPage)
       .limit(perPage);
+
     res.status(200).json({
-      message: "Fetched posts succesfully",
+      message: "Fetched posts successfully.",
       posts: posts,
       totalItems: totalItems,
     });
@@ -32,13 +32,12 @@ exports.getPosts = async (req, res, next) => {
 exports.createPost = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new Error("validation Failed, enter data is incorrect");
+    const error = new Error("Validation failed, entered data is incorrect.");
     error.statusCode = 422;
     throw error;
   }
-
   if (!req.file) {
-    const error = new Error("No image provided");
+    const error = new Error("No image provided.");
     error.statusCode = 422;
     throw error;
   }
@@ -52,15 +51,14 @@ exports.createPost = async (req, res, next) => {
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: userId,
+    creator: req.userId,
   });
 
   try {
-    const savedPost = await post.save();
-    const user = await User.findById(userId);
+    await post.save();
+    const user = await User.findById(req.userId);
     user.posts.push(post);
-    user.save();
-
+    await user.save();
     io.getIO().emit("posts", {
       action: "create",
       post: { ...post._doc, creator: { _id: req.userId, name: user.name } },
@@ -80,14 +78,14 @@ exports.createPost = async (req, res, next) => {
 
 exports.getPost = async (req, res, next) => {
   const postId = req.params.postId;
+  const post = await Post.findById(postId);
   try {
-    const post = await Post.findById(postId);
     if (!post) {
-      const err = new Error("Could not found post");
-      err.statusCode = 422;
-      throw err;
+      const error = new Error("Could not find post.");
+      error.statusCode = 404;
+      throw error;
     }
-    res.status(200).json({ message: "Post Fetched", post: post });
+    res.status(200).json({ message: "Post fetched.", post: post });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -120,28 +118,24 @@ exports.getPut = async (req, res, next) => {
   try {
     const post = await Post.findById(postId).populate("creator");
     if (!post) {
-      const err = new Error("Could not find post");
-      err.statusCode = 404;
-      throw err;
+      const error = new Error("Could not find post.");
+      error.statusCode = 404;
+      throw error;
     }
     if (post.creator._id.toString() !== req.userId) {
-      const err = new Error("Not authorized");
-      err.statusCode = 403;
-      throw err;
+      const error = new Error("Not authorized!");
+      error.statusCode = 403;
+      throw error;
     }
     if (imageUrl !== post.imageUrl) {
       clearImage(post.imageUrl);
     }
-
     post.title = title;
-    post.content = content;
     post.imageUrl = imageUrl;
+    post.content = content;
     const result = await post.save();
-    io.getIO().emit("posts", {
-      action: "update",
-      post: result,
-    });
-    res.status(200).json({ message: "Post Updated", post: result });
+    io.getIO().emit("posts", { action: "update", post: result });
+    res.status(200).json({ message: "Post updated!", post: result });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -157,28 +151,23 @@ exports.deletePost = async (req, res, next) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      const err = new Error("Could not find post");
-      err.statusCode = 404;
-      throw err;
+      const error = new Error("Could not find post.");
+      error.statusCode = 404;
+      throw error;
     }
     if (post.creator.toString() !== req.userId) {
-      const err = new Error("Not authorized");
-      err.statusCode = 403;
-      throw err;
+      const error = new Error("Not authorized!");
+      error.statusCode = 403;
+      throw error;
     }
 
     clearImage(post.imageUrl);
     await Post.findByIdAndRemove(postId);
     const user = await User.findById(req.userId);
     user.posts.pull(postId);
-    const result = await user.save();
-
-    io.getIO().emit("posts", {
-      action: "delete",
-      post: postId,
-    });
-
-    res.status(200).json({ message: "Delete Post" });
+    await user.save();
+    io.getIO().emit("posts", { action: "delete", post: postId });
+    res.status(200).json({ message: "Deleted post." });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

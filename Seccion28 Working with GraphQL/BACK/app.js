@@ -58,6 +58,21 @@ app.use((req, res, next) => {
 
 app.use(auth); //Middleware to get user
 
+app.put("/post-image", (req, res, next) => {
+  if (!req.isAuth) {
+    throw new Error("Not authenticated!");
+  }
+  if (!req.file) {
+    return res.status(200).json({ message: "No file provided!" });
+  }
+  if (req.body.oldPath) {
+    clearImage(req.body.oldPath);
+  }
+  return res
+    .status(201)
+    .json({ message: "File stored.", filePath: req.file.path });
+});
+
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -76,15 +91,12 @@ app.use(
   })
 );
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  const status = err.statusCode || 500;
-  const message = err.message;
-  const data = err.data;
-  res.status(status).json({
-    message: message,
-    data: data,
-  });
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
 });
 
 mongoose
@@ -98,3 +110,8 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+const clearImage = (filePath) => {
+  filePath = path.join(__dirname, "..", filePath);
+  fs.unlink(filePath, (err) => console.log(err));
+};
