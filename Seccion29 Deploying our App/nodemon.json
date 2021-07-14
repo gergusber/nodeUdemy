@@ -1,0 +1,8 @@
+{
+  "env": {
+    "MONGO_USER": "gerbertea",
+    "MONGO_PASSWORD": "ffaIj5bBtDLha5UL",
+    "MONGO_DEFAULT_DATABASE": "shopdb",
+    "STRIPE_KEY": "sk_test_51J7LlyGdpVNKZJBWwwnYg8yGViph4F4xlgmm3a164avHxwqCY9TWTEdqOy7RLo5YLCFKzPJ63e6QHTAKeUYNAb1a00M1YHcINS"
+  }
+}
