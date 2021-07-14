@@ -13,6 +13,7 @@ const User = require("./models/user");
 const compression = require("compression");
 const morgan = require("morgan");
 const fs = require("fs");
+const http = require("https");
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.x3o3q.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 // VAR USER_NAME = gerbertea
@@ -23,6 +24,9 @@ const store = new MongoDBStore({
   collection: "sessions",
 });
 const csrfProtection = csrf();
+
+const privateKey = fs.readFileSync("server.key");
+const certificate = fs.readFileSync("server.cert");
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -125,7 +129,15 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    app.listen(process.env.PORT || 3000);
+    http
+      .createServer(
+        {
+          key: privateKey,
+          cert: certificate,
+        },
+        app
+      )
+      .listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.log(err);
