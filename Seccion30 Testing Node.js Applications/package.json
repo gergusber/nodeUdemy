@@ -4,7 +4,7 @@
   "description": "brief resume",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --timeout 5000",
     "start": "nodemon app.js"
   },
   "author": "German",
