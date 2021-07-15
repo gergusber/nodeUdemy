@@ -34,6 +34,12 @@ describe("Auth controller ", function (done) {
         done();
       });
   });
+  beforeEach(function () {
+    // console.log("RESET SOMEETHING EACH TEST");
+  });
+  afterEach(function () {
+    // console.log("RESET SOMEETHING EACH TEST");
+  });
 
   it("Should throw an error with code 500if accesing the database fails", function () {
     sinon.stub(User, "findOne");
