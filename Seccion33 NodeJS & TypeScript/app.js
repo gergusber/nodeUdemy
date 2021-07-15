@@ -1,3 +1,4 @@
+"use strict";
 var num1Element = document.getElementById("num1");
 var num2Element = document.getElementById("num2");
 var butonElement = document.querySelector("button");
@@ -12,3 +13,5 @@ butonElement.addEventListener("click", function () {
 });
 // console.log(add(1, 6));
 // console.log(add("1", "6"));
+//COMPILE WITH tsc app.ts
+//tsc --init  => to create new ts config file
