@@ -1,0 +1,22 @@
+{
+  "name": "complete-guide",
+  "version": "1.0.0",
+  "description": "basic node application",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "nodemon app.js"
+  },
+  "author": "German",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.3.2",
+    "nodemon": "^2.0.12"
+  }
+}
