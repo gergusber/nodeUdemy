@@ -3,11 +3,13 @@ import routerTodos from "./routes/todos.ts";
 
 const app = new Application();
 
+app.use(async (ctx, next) => {
+  console.log("Middleware");
+  await next();
+});
+
 app.use(routerTodos.routes());
 app.use(routerTodos.allowedMethods());
-// app.use((ctx) => {
-//   ctx.response.body = "Hello World!";
-// });
 
 await app.listen({ port: 3000 });
 
