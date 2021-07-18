@@ -3,10 +3,10 @@ import { read } from "fs";
 import { nextTick } from "process";
 import { Todo } from "../models/todo";
 const router = Router();
-
 let todos: Todo[] = [];
 type RequestBody = { text: string };
 type RequestParams = { todoId: string };
+
 router.get("/", (req, res, next) => {
   res.status(200).json({ todos: todos });
 });
@@ -53,4 +53,5 @@ router.delete("/todo/:todoId", (req, res, next) => {
   todos = todos.filter((todoItem) => todoItem.id !== params.todoId);
   res.status(200).json({ message: "Todo item removed properly", todos: todos });
 });
+
 export default router;
