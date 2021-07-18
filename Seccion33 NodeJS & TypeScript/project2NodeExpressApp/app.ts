@@ -1,8 +1,9 @@
 import express from "express";
-// const express = require("express");
+import routerTodo from "./routes/todos";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(routerTodo);
 
-app.listen({ port: 3000 });
+app.listen(3000);

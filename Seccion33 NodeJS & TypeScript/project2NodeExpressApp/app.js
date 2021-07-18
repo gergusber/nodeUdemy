@@ -4,8 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-// const express = require("express");
+const todos_1 = __importDefault(require("./routes/todos"));
 const app = express_1.default();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.listen({ port: 3000 });
+app.use(todos_1.default);
+app.listen(3000);
