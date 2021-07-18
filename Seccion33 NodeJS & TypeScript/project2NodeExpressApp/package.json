@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "nodemon app.js"
+    "start": "node dist/app.js",
+    "start-server": "nodemon dist/app.js"
   },
   "author": "German",
   "license": "ISC",
